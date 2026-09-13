@@ -2,6 +2,8 @@
 
 ---
 
+## Idées
+
 ### Système de Commande et Suivi de Repas (Style Mini-Deliveroo)
 
 * **Le concept :** Gestion du catalogue de restaurants, prise de commande par le client et mise à jour du statut par le restaurateur (En préparation -> En livraison -> Livré).
