@@ -31,7 +31,7 @@ public class MenuService {
         }
         List<MenuItem> items = menuItemRepository.findByRestaurantId(restaurantId);
         return items.stream()
-                .map(i -> new MenuItemDto(i.getId(), i.getName(), i.getDescription(), i.getPrice()))
+                .map(i -> new com.example.ankory.dto.MenuItemDto(i.getId(), i.getName(), i.getCategory(), i.getDescription(), i.getPrice()))
                 .collect(Collectors.toList());
     }
 }

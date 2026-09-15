@@ -18,9 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -50,7 +47,6 @@ public class OrderService {
         order.setCreatedAt(Instant.now());
 
         BigDecimal total = BigDecimal.ZERO;
-        List<OrderLine> lines = new ArrayList<>();
         for (var l : req.lines) {
             MenuItem item = menuItemRepository.findById(l.menuItemId)
                     .orElseThrow(() -> new NotFoundException("Menu item not found: " + l.menuItemId));
@@ -74,7 +70,7 @@ public class OrderService {
         OrderStatus newStatus;
         try {
             newStatus = OrderStatus.valueOf(statusStr);
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException _) {
             throw new IllegalArgumentException("Unknown status: " + statusStr);
         }
         OrderStatus cur = order.getStatus();
@@ -90,9 +86,8 @@ public class OrderService {
     }
 
     private boolean isValidTransition(OrderStatus cur, OrderStatus next) {
-        if (cur == OrderStatus.IN_PREPARATION && next == OrderStatus.EN_LIVRAISON) return true;
-        if (cur == OrderStatus.EN_LIVRAISON && next == OrderStatus.LIVRE) return true;
-        return false;
+        return (cur == OrderStatus.IN_PREPARATION && next == OrderStatus.EN_LIVRAISON)
+                || (cur == OrderStatus.EN_LIVRAISON && next == OrderStatus.LIVRE);
     }
 
     private OrderResponseDto toDto(FoodOrder o) {
@@ -108,7 +103,7 @@ public class OrderService {
             lr.quantity = l.getQuantity();
             lr.unitPrice = l.getUnitPrice();
             return lr;
-        }).collect(Collectors.toList());
+        }).toList();
         return dto;
     }
 }

@@ -28,6 +28,9 @@ public class MenuItem {
     private String name;
 
     @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -36,9 +39,10 @@ public class MenuItem {
     public MenuItem() {
     }
 
-    public MenuItem(Restaurant restaurant, String name, String description, BigDecimal price) {
+    public MenuItem(Restaurant restaurant, String name, String category, String description, BigDecimal price) {
         this.restaurant = restaurant;
         this.name = name;
+        this.category = category;
         this.description = description;
         this.price = price;
     }
@@ -61,6 +65,14 @@ public class MenuItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getDescription() {
