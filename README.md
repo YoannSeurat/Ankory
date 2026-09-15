@@ -2,8 +2,6 @@
 
 ---
 
-## Idées
-
 ### Système de Commande et Suivi de Repas (Style Mini-Deliveroo)
 
 * **Le concept :** Gestion du catalogue de restaurants, prise de commande par le client et mise à jour du statut par le restaurateur (En préparation -> En livraison -> Livré).
@@ -17,23 +15,6 @@
 
 
 * **Bonus Client :** Une petite interface web (React/Angular) ou mobile (Android) pour l'affichage du menu client.
-
-
-
----
-
-### Plateforme de Revente de Billets de Concerts / Événements
-
-* **Le concept :** Un service de bourse d'échange entre particuliers permettant de mettre en vente un billet et de l'acheter en toute sécurité.
-* **Architecture & Endpoints REST/RPC :**
-* `POST /tickets` : Publier un billet avec son prix et justificatif.
-* `POST /tickets/{id}/buy` : Procéder à l'achat du billet.
-
-
-* **Base de données :** SQL pour les transactions financières et la gestion d'inventaire.
-
-
-* **Gestion des exceptions :** `400 Bad Request` si le prix de revente dépasse la valeur faciale autorisée, `422 Unprocessable Entity` si le billet est déjà vendu.
 
 ---
 
