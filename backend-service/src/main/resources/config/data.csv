@@ -1,0 +1,10 @@
+restaurantName,cuisine,menuName,category,price,description
+Triple Monstre,American,Cheeseburger,Plats,5,"Steak de bœuf, cheddar, ketchup, moutarde"
+Triple Monstre,American,Croque Monsieur,Plats,6,"Jambon de pays, emmental"
+Triple Monstre,American,Glace vanille,Desserts,2,"Vanille de Madagascar, M&Ms"
+Triple Monstre,American,Cheesecake,Desserts,4,"Fromage à la crème, citron, génoise."
+Pizza Planet,Italian,Margherita,Plats,9,"Mozzarella, basilic"
+Pizza Planet,Italian,Pepperoni,Plats,11,"Salami épicé, mozzarella"
+Pizza Planet,Italian,Chicken Supreme,Plats,11,"Poulet, poivrons, champignons"
+Pizza Planet,Italian,Tiramisu,Desserts,4,"Mascarpone, boudoirs, café, cacao"
+Pizza Planet,Italian,Matcha Panna Cotta,Desserts,5,"Matcha, vanille, crème"
