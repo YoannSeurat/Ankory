@@ -43,28 +43,27 @@ public class DataLoader implements CommandLineRunner {
                 Map<String, Restaurant> restaurants = new HashMap<>();
                 while ((line = br.readLine()) != null) {
                     if (line.isBlank()) continue;
-                    // simple CSV: restaurantName,cuisine,menuName,category,price,description
+                    // simple CSV: restaurantName,menuName,category,price,description
                     String[] parts = parseCsvLine(line);
-                                        if (parts.length < 6) {
+                                        if (parts.length < 5) {
                         log.warn("Skipping malformed line: {}", line);
                         continue;
                     }
                     String rName = parts[0].trim();
-                    String cuisine = parts[1].trim();
-                    String menuName = parts[2].trim();
-                                        String category = parts[3].trim();
-                    String priceStr = parts[4].trim();
-                                        String desc = parts[5].trim();
-                                        BigDecimal price;
+                    String menuName = parts[1].trim();
+                    String category = parts[2].trim();
+                    String priceStr = parts[3].trim();
+                    String desc = parts[4].trim();
+                    BigDecimal price;
                     try {
                         price = new BigDecimal(priceStr);
                     } catch (Exception e) {
-                        log.warn("Invalid price on line, skipping: {}", line);
+                        log.warn("Invalid price on line {}, skipping", line);
                         continue;
                     }
                     Restaurant r = restaurants.get(rName);
                     if (r == null) {
-                        r = new Restaurant(rName, cuisine);
+                        r = new Restaurant(rName);
                         restaurantRepository.save(r);
                         restaurants.put(rName, r);
                     }
@@ -82,8 +81,8 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void seedDefaults() {
-        Restaurant r1 = new Restaurant("Le Bon Chef", "French");
-        Restaurant r2 = new Restaurant("Pizza Planet", "Italian");
+        Restaurant r1 = new Restaurant("Big Chef");
+        Restaurant r2 = new Restaurant("Italy World");
         restaurantRepository.save(r1);
         restaurantRepository.save(r2);
 

@@ -25,6 +25,19 @@ public class OrderController {
         return ResponseEntity.ok(orderService.createOrder(req));
     }
 
+    @GetMapping
+    public ResponseEntity<java.util.List<OrderResponseDto>> listOrders(
+            @RequestParam(value = "restaurantId", required = false) Long restaurantId) {
+        log.info("GET /orders restaurantId={}", restaurantId);
+        return ResponseEntity.ok(orderService.listOrders(restaurantId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponseDto> getOrder(@PathVariable("id") Long id) {
+        log.info("GET /orders/{}", id);
+        return ResponseEntity.ok(orderService.getOrder(id));
+    }
+
     @PatchMapping("/{id}/status")
     public ResponseEntity<OrderResponseDto> updateStatus(@PathVariable("id") Long id, @RequestBody StatusUpdateDto dto) {
         log.info("PATCH /orders/{}/status", id);

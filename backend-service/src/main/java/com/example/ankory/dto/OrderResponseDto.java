@@ -14,6 +14,7 @@ public class OrderResponseDto {
 
     public static class OrderLineResponseDto {
         public Long menuItemId;
+        public String name;
         public Integer quantity;
         public BigDecimal unitPrice;
     }
