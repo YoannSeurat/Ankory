@@ -31,8 +31,8 @@ public class RestaurantController {
     public ResponseEntity<List<RestaurantDto>> listRestaurants() {
         log.info("GET /restaurants");
         var list = restaurantRepository.findAll().stream()
-                .map(r -> new RestaurantDto(r.getId(), r.getName(), r.getCuisine()))
-                .collect(Collectors.toList());
+                .map(r -> new RestaurantDto(r.getId(), r.getName()))
+                .toList();
         return ResponseEntity.ok(list);
     }
 

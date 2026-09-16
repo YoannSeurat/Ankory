@@ -13,6 +13,7 @@ import com.example.ankory.repositories.OrderRepository;
 import com.example.ankory.repositories.RestaurantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,13 +49,18 @@ public class OrderService {
 
         BigDecimal total = BigDecimal.ZERO;
         for (var l : req.lines) {
-            MenuItem item = menuItemRepository.findById(l.menuItemId)
-                    .orElseThrow(() -> new NotFoundException("Menu item not found: " + l.menuItemId));
-            BigDecimal unit = item.getPrice();
-            BigDecimal lineTotal = unit.multiply(BigDecimal.valueOf(l.quantity));
-            total = total.add(lineTotal);
-            OrderLine ol = new OrderLine(order, item, l.quantity, unit);
-            order.addLine(ol);
+            final Long menuItemId2 = l.menuItemId;
+            if (menuItemId2 != null) {
+                MenuItem item = menuItemRepository.findById(menuItemId2)
+                        .orElseThrow(() -> new NotFoundException("Menu item not found: " + l.menuItemId));
+                BigDecimal unit = item.getPrice();
+                BigDecimal lineTotal = unit.multiply(BigDecimal.valueOf(l.quantity));
+                total = total.add(lineTotal);
+                OrderLine ol = new OrderLine(order, item, l.quantity, unit);
+                order.addLine(ol);
+            } else {
+                throw new IllegalArgumentException("Menu item id required");
+            }
         }
         order.setTotalAmount(total);
         FoodOrder saved = orderRepository.save(order);
@@ -63,7 +69,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDto updateStatus(Long orderId, String statusStr) {
+    public OrderResponseDto updateStatus(@NonNull Long orderId, String statusStr) {
         log.info("Update order {} status to {}", orderId, statusStr);
         FoodOrder order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found: " + orderId));
@@ -86,7 +92,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponseDto getOrder(Long orderId) {
+    public OrderResponseDto getOrder(@NonNull Long orderId) {
         FoodOrder order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found: " + orderId));
         return toDto(order);

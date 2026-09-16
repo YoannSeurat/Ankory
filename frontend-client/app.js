@@ -253,6 +253,7 @@ async function refreshOrder() {
     if (state.order.status === "LIVRE") clearInterval(state.poll);
   } catch (err) {
     clearInterval(state.poll);
+    console.log('Exception while refreshing order: ' + err);
   }
 }
 
