@@ -85,6 +85,21 @@ public class OrderService {
         return toDto(saved);
     }
 
+    @Transactional(readOnly = true)
+    public OrderResponseDto getOrder(Long orderId) {
+        FoodOrder order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Order not found: " + orderId));
+        return toDto(order);
+    }
+
+    @Transactional(readOnly = true)
+    public java.util.List<OrderResponseDto> listOrders(Long restaurantId) {
+        java.util.List<FoodOrder> orders = (restaurantId == null)
+                ? orderRepository.findAllByOrderByCreatedAtDesc()
+                : orderRepository.findByRestaurantIdOrderByCreatedAtDesc(restaurantId);
+        return orders.stream().map(this::toDto).toList();
+    }
+
     private boolean isValidTransition(OrderStatus cur, OrderStatus next) {
         return (cur == OrderStatus.IN_PREPARATION && next == OrderStatus.EN_LIVRAISON)
                 || (cur == OrderStatus.EN_LIVRAISON && next == OrderStatus.LIVRE);
@@ -100,6 +115,7 @@ public class OrderService {
         dto.lines = o.getLines().stream().map(l -> {
             OrderResponseDto.OrderLineResponseDto lr = new OrderResponseDto.OrderLineResponseDto();
             lr.menuItemId = l.getMenuItem().getId();
+            lr.name = l.getMenuItem().getName();
             lr.quantity = l.getQuantity();
             lr.unitPrice = l.getUnitPrice();
             return lr;

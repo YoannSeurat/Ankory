@@ -1,7 +1,6 @@
 @font-face {
   font-family: "Coolvetica";
-  src: url("fonts/coolvetica.woff2") format("woff2"),
-       url("fonts/coolvetica.ttf") format("truetype");
+  src: url("fonts/Coolvetica-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -40,7 +39,7 @@ body {
 
 .logo {
   margin: 0;
-  color: #fff;
+  color: var(--cream);
   font-family: "Coolvetica", var(--sans);
   font-weight: 400;
   font-size: 30px;
@@ -57,7 +56,7 @@ body {
 .view-tab {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.5);
-  color: #fff;
+  color: var(--cream);
   padding: 5px 12px;
   border-radius: 6px;
   font-size: 13px;
@@ -66,9 +65,9 @@ body {
 }
 
 .view-tab.is-active {
-  background: #fff;
+  background: var(--cream);
   color: var(--red);
-  border-color: #fff;
+  border-color: var(--cream);
 }
 
 .view-tab:focus-visible,
@@ -212,7 +211,7 @@ button:focus-visible {
   align-items: center;
   border: 1px solid var(--line);
   border-radius: 5px;
-  background: #fff;
+  background: var(--cream-block);
   overflow: hidden;
 }
 
@@ -270,7 +269,7 @@ button:focus-visible {
   border: none;
   border-radius: 6px;
   background: var(--red);
-  color: #fff;
+  color: var(--cream);
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
@@ -289,8 +288,9 @@ button:focus-visible {
   padding: 9px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #fff;
-  color: var(--ink);
+  background: transparent;
+  border-color: var(--red);
+  color: var(--red);
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
