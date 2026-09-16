@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ankory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1 class="logo">Ankory</h1>
+  <nav class="views">
+    <button type="button" class="view-tab is-active" data-view="client">Client</button>
+    <button type="button" class="view-tab" data-view="staff">Restaurateur</button>
+  </nav>
+</header>
+
+<main class="page">
+
+  <section id="view-client" class="view">
+    <div class="columns">
+
+      <div class="col-main">
+        <p class="label">Restaurant</p>
+        <div id="restaurant-list" class="chips"></div>
+        <div id="menu"></div>
+      </div>
+
+      <aside class="col-side">
+        <div id="cart-panel" class="panel">
+          <p class="label">Panier</p>
+          <div id="cart-lines"></div>
+          <div class="total-row">
+            <span>Total</span>
+            <span id="cart-total">0,00 €</span>
+          </div>
+          <button type="button" id="submit-order" class="btn-primary">Commander</button>
+        </div>
+
+        <div id="track-panel" class="panel hidden">
+          <div class="panel-head">
+            <p class="label">Suivi</p>
+            <span id="track-badge" class="badge">En préparation</span>
+          </div>
+          <p class="label">Commande</p>
+          <p id="track-ref" class="ref"></p>
+          <div class="steps">
+            <div class="step" data-step="IN_PREPARATION"><i></i><span>En préparation</span></div>
+            <div class="step" data-step="EN_LIVRAISON"><i></i><span>En livraison</span></div>
+            <div class="step" data-step="LIVRE"><i></i><span>Livré</span></div>
+          </div>
+          <div id="track-lines"></div>
+          <button type="button" id="new-order" class="btn-ghost">Nouvelle commande</button>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <section id="view-staff" class="view hidden">
+    <p class="label">Restaurant</p>
+    <div id="staff-restaurant-list" class="chips"></div>
+    <p class="label">Commandes</p>
+    <div id="staff-orders" class="block"></div>
+  </section>
+
+</main>
+
+<p id="toast" class="toast hidden"></p>
+
+<script src="app.js"></script>
+</body>
+</html>
