@@ -57,8 +57,8 @@ public class DataLoader implements CommandLineRunner {
                     BigDecimal price;
                     try {
                         price = new BigDecimal(priceStr);
-                    } catch (Exception e) {
-                        log.warn("Invalid price on line {}, skipping", line);
+                    } catch (Exception _) {
+                        log.warn("Invalid price in record, skipping: {}", line);
                         continue;
                     }
                     Restaurant r = restaurants.get(rName);

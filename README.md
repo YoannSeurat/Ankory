@@ -82,7 +82,7 @@ This mimics the flow of a typical delivery or takeaway service.
 ### 1) Clone the repository
 
 ```bash
-git clone https://github.com/your-user/Ankory.git
+git clone https://github.com/YoannSeurat/Ankory.git
 cd Ankory
 ```
 
@@ -126,7 +126,7 @@ The seed data source is:
 
 - `backend-service/src/main/resources/config/data.csv`
 
-If that file is missing or malformed, the app falls back to a default set of restaurant/menu entries.
+ If the file is missing or cannot be loaded, the app falls back to a default set of restaurant/menu entries; malformed rows are skipped.
 
 This makes the application runnable immediately without external setup.
 
@@ -187,7 +187,7 @@ Example response:
 [
   {
     "id": 4,
-    "name": "Sakura Sushi",
+    "name": "Sakura Sushi"
   }
 ]
 ```
@@ -204,7 +204,6 @@ Example response:
 [
   {
     "id": 1,
-    "restaurantId": 1,
     "name": "Cheeseburger",
     "category": "Plats",
     "description": "Steak de bœuf, cheddar, ketchup, moutarde",

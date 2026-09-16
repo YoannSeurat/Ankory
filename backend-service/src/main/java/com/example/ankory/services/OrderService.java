@@ -51,7 +51,10 @@ public class OrderService {
         for (var l : req.lines) {
             final Long menuItemId2 = l.menuItemId;
             if (menuItemId2 != null) {
-                MenuItem item = menuItemRepository.findById(menuItemId2)
+                if (l.quantity == null || l.quantity <= 0) {
+                    throw new IllegalArgumentException("Quantity must be positive");
+                }
+                MenuItem item = menuItemRepository.findByIdAndRestaurantId(menuItemId2, req.restaurantId)
                         .orElseThrow(() -> new NotFoundException("Menu item not found: " + l.menuItemId));
                 BigDecimal unit = item.getPrice();
                 BigDecimal lineTotal = unit.multiply(BigDecimal.valueOf(l.quantity));
