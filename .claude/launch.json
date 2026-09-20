@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ankory-backend",
+      "runtimeExecutable": "backend-service/gradlew",
+      "runtimeArgs": ["bootRun"],
+      "port": 8080
+    }
+  ]
+}
