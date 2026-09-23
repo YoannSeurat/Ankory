@@ -7,10 +7,10 @@ import com.example.ankory.repositories.MenuItemRepository;
 import com.example.ankory.repositories.RestaurantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -24,7 +24,7 @@ public class MenuService {
         this.restaurantRepository = restaurantRepository;
     }
 
-    public List<MenuItemDto> getMenuForRestaurant(Long restaurantId) {
+    public List<MenuItemDto> getMenuForRestaurant(@NonNull Long restaurantId) {
         log.info("Fetching menu for restaurant {}", restaurantId);
         if (!restaurantRepository.existsById(restaurantId)) {
             throw new NotFoundException("Restaurant not found: " + restaurantId);
@@ -32,6 +32,6 @@ public class MenuService {
         List<MenuItem> items = menuItemRepository.findByRestaurantId(restaurantId);
         return items.stream()
                 .map(i -> new com.example.ankory.dto.MenuItemDto(i.getId(), i.getName(), i.getCategory(), i.getDescription(), i.getPrice()))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

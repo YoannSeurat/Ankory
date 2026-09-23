@@ -141,11 +141,13 @@ function renderMenu() {
           '<p class="row-desc"></p>' +
           "</div>" +
           '<span class="row-price"></span>' +
-          '<button type="button" class="btn-add" aria-label="Ajouter">+</button>';
+          '<button type="button" class="btn-add">+</button>';
         row.querySelector(".row-name").textContent = item.name;
         row.querySelector(".row-desc").textContent = item.description;
         row.querySelector(".row-price").textContent = euro(item.price);
-        row.querySelector(".btn-add").addEventListener("click", () => addToCart(item));
+        const addButton = row.querySelector(".btn-add");
+        addButton.setAttribute("aria-label", "Ajouter " + item.name);
+        addButton.addEventListener("click", () => addToCart(item));
         block.appendChild(row);
       });
 
@@ -253,6 +255,7 @@ async function refreshOrder() {
     if (state.order.status === "LIVRE") clearInterval(state.poll);
   } catch (err) {
     clearInterval(state.poll);
+    console.log('Exception while refreshing order: ' + err);
   }
 }
 
@@ -312,9 +315,11 @@ function badgeClass(status) {
 
 async function loadOrders() {
   if (!state.staffRestaurantId) return;
+  const requestedRestaurantId = state.staffRestaurantId;
   const box = $("staff-orders");
   try {
-    const orders = await api("/orders?restaurantId=" + state.staffRestaurantId);
+    const orders = await api("/orders?restaurantId=" + requestedRestaurantId);
+    if (state.staffRestaurantId !== requestedRestaurantId) return;
     box.innerHTML = "";
 
     if (!orders.length) {
@@ -354,6 +359,7 @@ async function loadOrders() {
       box.appendChild(row);
     });
   } catch (err) {
+    if (state.staffRestaurantId !== requestedRestaurantId) return;
     box.innerHTML = '<p class="empty"></p>';
     box.querySelector(".empty").textContent = err.message;
   }

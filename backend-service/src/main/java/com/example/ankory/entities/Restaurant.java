@@ -18,15 +18,11 @@ public class Restaurant {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String cuisine;
-
     public Restaurant() {
     }
 
-    public Restaurant(String name, String cuisine) {
+    public Restaurant(String name) {
         this.name = name;
-        this.cuisine = cuisine;
     }
 
     public Long getId() {
@@ -39,13 +35,5 @@ public class Restaurant {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCuisine() {
-        return cuisine;
-    }
-
-    public void setCuisine(String cuisine) {
-        this.cuisine = cuisine;
     }
 }
