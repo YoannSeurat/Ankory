@@ -1,36 +1,107 @@
 # Ankory
 
----
+Ankory est une application de commande et de suivi de repas, inspiree d'un mini service de livraison. 
 
-### Système de Commande et Suivi de Repas (Style Mini-Deliveroo)
+Elle permet de consulter le menu d'un restaurant, de composer un panier, de passer une commande et de suivre son avancement. 
 
-* **Le concept :** Gestion du catalogue de restaurants, prise de commande par le client et mise à jour du statut par le restaurateur (En préparation -> En livraison -> Livré).
-* **Architecture & Endpoints REST :**
-* `GET /restaurants/{id}/menu` : Afficher la carte d'un restaurant.
-* `POST /orders` : Valider un panier et créer une commande.
-* `PATCH /orders/{id}/status` : Changer l'état de la commande.
+Une vue restaurateur permet ensuite de faire progresser le statut de la commande.
 
+## Architecture
 
-* **Base de données :** NoSQL (MongoDB) pour stocker les menus variés et dynamiques des restaurants, ou SQL.
-
-
-* **Bonus Client :** Une petite interface web (React/Angular) ou mobile (Android) pour l'affichage du menu client.
-
----
-
-### Structure recommandée pour le projet (quel que soit le sujet)
-
-Pour répondre aux consignes de structure et de qualité du projet :
+Le depot contient deux parties :
 
 ```text
-mon-projet-git/
-├── backend-service/           # Le projet principal (Spring Boot / Express / Go / etc.)[cite: 2]
-│   ├── src/
-│   │   ├── controllers/      # Couche Web (API REST/gRPC)[cite: 2]
-│   │   ├── services/         # Couche Métier / Inversion of Control[cite: 2]
-│   │   ├── entities/         # Couche Données / Modèles DB[cite: 2]
-│   │   ├── exceptions/       # Exception Handler global[cite: 2]
-│   │   └── config/           # IoC / Dependency Injection setup[cite: 2]
-└── frontend-client/           # (Optionnel) Application React/Angular/Android[cite: 1, 2]
-
+Ankory/
+├── backend-service/       # API REST Spring Boot et persistance H2/JPA
+│   ├── src/main/java/     # controleurs, services, entites, depots et DTO
+│   ├── src/main/resources/
+│   │   ├── config/data.csv # restaurants et plats initiaux
+│   │   └── application.properties
+│   └── src/test/java/     # tests de contexte et du cycle de commande
+└── frontend-client/       # interface web statique HTML/CSS/JavaScript
 ```
+
+## Lancer le projet
+
+### Prerequis
+
+- un JDK 26 installe et disponible dans `JAVA_HOME` ou dans le `PATH` ;
+- Windows : utiliser `gradlew.bat` ; macOS/Linux : utiliser `./gradlew`.
+
+### Demarrer l'application
+
+Depuis la racine du depot :
+
+```powershell
+cd backend-service
+.\gradlew.bat bootRun
+```
+
+Sur macOS/Linux :
+
+```bash
+cd backend-service
+./gradlew bootRun
+```
+
+Une fois le demarrage termine, ouvrir [http://localhost:8080](http://localhost:8080) dans un navigateur. L'interface est servie par Spring Boot.
+
+Les donnees de demonstration sont chargees automatiquement depuis `backend-service/src/main/resources/config/data.csv`. 
+
+Si ce fichier est absent ou illisible, le backend utilise un petit jeu de donnees de secours.
+
+### Console H2
+
+La console H2 est disponible a [http://localhost:8080/h2-console](http://localhost:8080/h2-console).
+
+Avec la configuration actuelle, utiliser :
+
+```text
+JDBC URL : jdbc:h2:mem:ankorydb
+User     : ankoryadmin
+Password : laisser vide
+```
+
+
+## API REST
+
+L'API est disponible sur `http://localhost:8080`.
+
+| Methode | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/restaurants` | Liste les restaurants disponibles. |
+| `GET` | `/restaurants/{id}/menu` | Retourne le menu d'un restaurant. |
+| `POST` | `/orders` | Cree une commande. |
+| `GET` | `/orders?restaurantId={id}` | Liste les commandes, eventuellement filtrees par restaurant. |
+| `GET` | `/orders/{id}` | Retourne le detail et le statut d'une commande. |
+| `PATCH` | `/orders/{id}/status` | Met a jour le statut d'une commande. |
+
+### Creer une commande
+
+```http
+POST /orders
+Content-Type: application/json
+
+{
+	"restaurantId": 1,
+	"lines": [
+		{ "menuItemId": 1, "quantity": 2 }
+	]
+}
+```
+
+Le total est recalcule cote backend a partir des prix enregistres dans le menu.
+
+Une commande commence toujours avec le statut `IN_PREPARATION`.
+
+### Mettre a jour un statut
+
+```http
+PATCH /orders/1/status
+Content-Type: application/json
+
+{ "status": "EN_LIVRAISON" }
+```
+
+Les statuts acceptes sont `IN_PREPARATION`, `EN_LIVRAISON` et `LIVRE`. Une
+transition qui saute une etape est rejetee.
